@@ -90,7 +90,7 @@ class Jwt {
     /**
      * 
      * @param req 
-     * action para pegar o tipo do usuario
+     * action para pegar o nome do usuario
      * @returns 
      */
     async nomeRecovery(req)
@@ -108,7 +108,7 @@ class Jwt {
     /**
      * 
      * @param req 
-     * action para pegar o tipo do usuario
+     * action para pegar o email do usuario
      * @returns 
      */
     async emailRecovery(req)
@@ -126,7 +126,7 @@ class Jwt {
     /**
      * 
      * @param req 
-     * action para pegar o tipo do usuario
+     * action para pegar o telefone do usuario
      * @returns 
      */
     async telefoneRecovery(req)
