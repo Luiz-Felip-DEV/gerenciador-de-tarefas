@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import nodemailer from 'nodemailer';
+import emailRepository from '../repositories/emailRepository.js';
 
 class emailUtils {
 
@@ -23,6 +24,38 @@ class emailUtils {
         return transporter;
     }
 
+      /**
+     * 
+     * @array dados 
+     * monta um array de inserção de dados
+     * @returns 
+     */
+      async setEmail(dados, cod)
+      {
+        const email  = dados.email;
+        const codigo = cod; 
+        const nome   = dados.nome;
+   
+        const arrDados = {nome: nome, email: email, codigo: codigo};
+  
+        return arrDados;
+      }
+
+       /**
+     * 
+     * @array dados 
+     * monta um array de inserção de dados
+     * @returns 
+     */
+       async verifyEmail(email)
+       {
+            const arrDados = await emailRepository.verifyEmail(email);
+
+            const verify = (arrDados[0]) ? true : false;
+
+            return verify
+       }
+
     /**
      * 
      * @param nome
@@ -30,7 +63,7 @@ class emailUtils {
      * action para a criação do hmtl para o codigo de reset de senha
      * @returns 
      */
-    async htmlEmail(nome, codigo) 
+    async htmlResetSenha(nome, codigo) 
     {
         const htmlBody = `<!DOCTYPE html>
                                 <html lang="pt-br">
@@ -43,7 +76,7 @@ class emailUtils {
                                 <body>
                                     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; padding: 20px; border-radius: 10px; border: 1px solid #ddd;">
                                         <h2 style="color: #333;">Olá, ${nome}</h2>
-                                        <p style="color: #555;">Aqui está o código para resetar a senha:</p>
+                                        <p style="color: #555;">Aqui está o código para confirmacao de email:</p>
                                         <div style="background-color: #fff; padding: 15px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #ccc; text-align: center;">
                                             <pre style="white-space: pre-wrap; word-wrap: break-word; font-family: Consolas, monospace; font-size: 14px; color: #333; margin: 0; font-weight: bold;">${codigo}</pre>
                                         </div>
@@ -64,7 +97,7 @@ class emailUtils {
      * action para a confirmação de alteração de senha
      * @returns 
      */
-    async confirmEmail(nome)
+    async htmlConfirmEmail(nome)
     {
         const hmtlBody = `<!DOCTYPE html>
                                 <html lang="pt-br">
@@ -95,8 +128,8 @@ class emailUtils {
      * action para a confirmação de cadastro
      * @returns 
      */
-    async confirmCadaster(nome)
-    {4
+    async htmlConfirmCadaster(nome)
+    {
         const htmlBody = `<!DOCTYPE html>
                             <html lang="pt-br">
                             <head>

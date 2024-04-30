@@ -12,7 +12,7 @@ router.post('/login', userRequest.setLogin, userController.setLogin);
 
 // GET
 
-// router.get('/user', jwtUtils.checkToken, userController.getDadosUser);
+router.get('/coding', userRequest.setCod, userController.setCod);
 
 // UPDATE
 

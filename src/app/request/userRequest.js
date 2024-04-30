@@ -71,6 +71,37 @@ class userRequest {
       
           next();
     }
+
+    async setCod(req, res, next)
+    {
+        let msg = '';
+        
+        if (req.query.email && !userUtils.emailValido(req.query.email))
+        {
+            msg = 'Email inválido.';
+        }
+
+        if (!req.query.email)
+        {
+            msg = 'Parametro email é obrigatorio.';
+        }
+
+        if (!req.query.codigo)
+        {
+            if (!req.query.nome)
+            msg = 'Parametro nome é obrigatorio.';
+        }
+
+        if (msg) {
+            return res.status(400).json({
+              error: true,
+              msgUser: msg,
+              msgOriginal: msg,
+            });
+          }
+      
+          next();
+    }
 }
 
 export default new userRequest();

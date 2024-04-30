@@ -13,16 +13,16 @@ class emailController {
     async resetPassword(email, name)
     {
         const transporter  = await emailUtils.emailConnection();
-        const codigo       = Math.floor(100000 + Math.random() * 900000);
+        const codigo       = await this.gerarCodigo();
 
-        const htmlBody = await emailUtils.htmlEmail(name, codigo);
+        const htmlBody = await emailUtils.htmlResetSenha(name, codigo);
 
         try {
                 
             transporter.sendMail({
                 from: process.env.EMAIL,
                 to: email,
-                subject: "Recuperação de Senha",
+                subject: "Verificação de Email",
                 html: htmlBody,
                 text: `Obrigado por enviar o formulario de ajuda, SR(A) <strong>${name}</strong>, Daqui alguns instantes você receberá um retorno!`
             });  
@@ -45,7 +45,7 @@ class emailController {
     {
         const transporter  = await emailUtils.emailConnection();
 
-        const htmlBody = await emailUtils.confirmEmail(name);
+        const htmlBody = await emailUtils.htmlConfirmEmail(name);
 
         try {
                 
@@ -75,7 +75,7 @@ class emailController {
     {
         const transporter  = await emailUtils.emailConnection();
 
-        const htmlBody = await emailUtils.confirmCadaster(name);
+        const htmlBody = await emailUtils.htmlConfirmCadaster(name);
 
         try {
                 
@@ -93,6 +93,15 @@ class emailController {
 
         return true;
     }
+
+    async gerarCodigo() {
+        const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let codigo = '';
+        for (let i = 0; i < 6; i++) {
+          codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+        }
+        return codigo;
+      }
 }
 
 export default new emailController();
