@@ -76,19 +76,19 @@ class userRequest {
     {
         let msg = '';
         
-        if (req.query.email && !userUtils.emailValido(req.query.email))
+        if (req.body.email && !userUtils.emailValido(req.body.email))
         {
             msg = 'Email inválido.';
         }
 
-        if (!req.query.email)
+        if (!req.body.email)
         {
             msg = 'Parametro email é obrigatorio.';
         }
 
-        if (!req.query.codigo)
+        if (!req.body.codigo)
         {
-            if (!req.query.nome)
+            if (!req.body.nome)
             msg = 'Parametro nome é obrigatorio.';
         }
 

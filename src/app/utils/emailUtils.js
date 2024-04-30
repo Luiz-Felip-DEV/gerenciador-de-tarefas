@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import nodemailer from 'nodemailer';
 import emailRepository from '../repositories/emailRepository.js';
+import userUtils from './userUtils.js';
 
 class emailUtils {
 
@@ -34,7 +35,7 @@ class emailUtils {
       {
         const email  = dados.email;
         const codigo = cod; 
-        const nome   = dados.nome;
+        const nome   = await userUtils.formatarNome(dados.nome);
    
         const arrDados = {nome: nome, email: email, codigo: codigo};
   

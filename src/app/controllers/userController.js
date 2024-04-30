@@ -100,10 +100,10 @@ class userController {
 
     async setCod(req, res)
     {
-        const email = req.query.email; 
+        const email = req.body.email; 
 
-        if (!req.query.codigo) {
-            const nome  = await userUtils.formatarNome(req.query.nome);
+        if (!req.body.codigo) {
+            const nome  = await userUtils.formatarNome(req.body.nome);
             let codigo  = '';
 
             try {
@@ -128,12 +128,10 @@ class userController {
                       });
                 }
             } else {
-                const arrSetEmail = await emailUtils.setEmail(req.query, codigo);
-
-                let arrEmail = [];
+                const arrSetEmail = await emailUtils.setEmail(req.body, codigo);
     
                 try {
-                    arrEmail = await emailRepository.setEmail(arrSetEmail);
+                    await emailRepository.setEmail(arrSetEmail);
                 } catch (e) {
                     return res.status(500).json({
                         error: true,
@@ -150,14 +148,14 @@ class userController {
               });
 
         } else {
-            const codigoUser = req.query.codigo;
+            const codigoUser = req.body.codigo;
             let   codigoVer  = '';
             let   nome       = '';
 
             try {
                 const arrCodigo = await emailRepository.getCod(email);
                 codigoVer       = arrCodigo[0].codigo;
-                nome            = await userUtils.formatarNome(arrCodigo[0].nome);
+                nome            = arrCodigo[0].nome;
             } catch (e) {
                 return res.status(500).json({
                     error: true,
