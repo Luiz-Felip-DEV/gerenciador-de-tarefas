@@ -28,12 +28,12 @@ class emailRepository {
      * query para login
      * @returns 
      */
-    async verifyEmail(email)
+    async verifyEmail(email, type)
     {
-        const sql = 'SELECT * FROM validation_code WHERE email = ?';
+        const sql = 'SELECT * FROM validation_code WHERE email = ? AND type = ?';
 
         return new Promise((resolve, reject) => {
-            conexao.query(sql,email,(error, result) => {
+            conexao.query(sql,[email, type],(error, result) => {
                 if (error) return reject(false);
 
                 const row = JSON.parse(JSON.stringify(result));
@@ -48,12 +48,12 @@ class emailRepository {
      * query para login
      * @returns 
      */
-    async putCod(email, codigo)
+    async putCod(email, codigo, type)
     {
-        const sql = 'UPDATE validation_code SET codigo = ? WHERE email = ?';
+        const sql = 'UPDATE validation_code SET codigo = ? WHERE email = ? AND type = ?';
 
         return new Promise((resolve, reject) => {
-            conexao.query(sql,[codigo, email],(error, result) => {
+            conexao.query(sql,[codigo, email, type],(error, result) => {
                 if (error) return reject(false);
 
                 const row = JSON.parse(JSON.stringify(result));
@@ -68,12 +68,12 @@ class emailRepository {
      * query para login
      * @returns 
      */
-    async getCod(email)
+    async getCod(email, type)
     {
-        const sql = 'SELECT codigo, nome FROM validation_code WHERE email = ?';
+        const sql = 'SELECT codigo, nome FROM validation_code WHERE email = ? AND type = ?';
 
         return new Promise((resolve, reject) => {
-            conexao.query(sql,email,(error, result) => {
+            conexao.query(sql,[email, type],(error, result) => {
                 if (error) return reject(false);
 
                 const row = JSON.parse(JSON.stringify(result));

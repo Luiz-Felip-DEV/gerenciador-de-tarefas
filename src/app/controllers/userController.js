@@ -109,6 +109,7 @@ class userController {
             try {
                 codigo = await emailController.resetPassword(email, nome);
             } catch (e) {
+                console.log('no resetPassword');
                 return res.status(500).json({
                     error: true,
                     msgUser: "Erro ao tentar enviar o email, Por Favor, Tente novamente mais tarde.",
@@ -116,11 +117,12 @@ class userController {
                   });
             }
 
-            if (await emailUtils.verifyEmail(email)) {
+            if (await emailUtils.verifyEmail(email, 'EMAIL')) {
                 
                 try {
-                    await emailRepository.putCod(email, codigo);
+                    await emailRepository.putCod(email, codigo, 'EMAIL');
                 } catch (e) {
+                    console.log('no putCod');
                     return res.status(500).json({
                         error: true,
                         msgUser: "Erro ao tentar enviar o email, Por Favor, Tente novamente mais tarde.",
@@ -133,6 +135,7 @@ class userController {
                 try {
                     await emailRepository.setEmail(arrSetEmail);
                 } catch (e) {
+                    console.log('no setEmail');
                     return res.status(500).json({
                         error: true,
                         msgUser: "Erro ao tentar enviar o email, Por Favor, Tente novamente mais tarde.",
@@ -153,7 +156,7 @@ class userController {
             let   nome       = '';
 
             try {
-                const arrCodigo = await emailRepository.getCod(email);
+                const arrCodigo = await emailRepository.getCod(email, 'EMAIL');
                 codigoVer       = arrCodigo[0].codigo;
                 nome            = arrCodigo[0].nome;
             } catch (e) {
@@ -181,6 +184,51 @@ class userController {
               });
         }
     }
+
+    async setSms(req, res) {
+        const telefone = req.body.telefone;
+        // const mensagem = req.body.mensagem.replace(/ /g, '+');
+        const codigo = Math.floor(100000 + Math.random() * 900000);
+        const mensagem = "seu+codigo+de+confirmação+é:+" + codigo;
+    
+        if (!(await userUtils.verifyTelephone(telefone))) {
+          return res.status(400).json({
+            error: true,
+            msgUser: "Telefone nao encontrado na base de dados.",
+            msgOriginal: "Telefone nao encontrado na base de dados",
+          });
+        }
+    
+        const url =
+          "https://api.iagentesms.com.br/webservices/http.php?metodo=envio&usuario=" +
+          process.env.EMAIL_IA +
+          "&senha=" +
+          process.env.PASSWORD_IA +
+          "&celular=" +
+          telefone +
+          "&mensagem=" +
+          mensagem;
+    
+        await fetch(url)
+          .then((response) => response.text())
+          .then((text) => {
+            if (text !== "OK") {
+              return res.status(500).json({
+                error: true,
+                msgUser:
+                  "Ops! Parece que ocorreu um erro ao enviar o seu SMS. Pedimos desculpas pelo inconveniente. Por favor, tente novamente mais tarde. Se o problema persistir, entre em contato conosco para que possamos ajudá-lo a resolver.",
+                msgOriginal: null,
+              });
+            }
+    
+            return res.status(200).json({
+              error: false,
+              msgUser: "Ótimo! Seu SMS foi com o codigo foi enviado com sucesso.",
+              msgOriginal: null,
+              codigo: codigo,
+            });
+          });
+      }
 }
 
 export default new userController();

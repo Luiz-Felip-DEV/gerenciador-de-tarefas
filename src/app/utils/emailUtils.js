@@ -37,7 +37,7 @@ class emailUtils {
         const codigo = cod; 
         const nome   = await userUtils.formatarNome(dados.nome);
    
-        const arrDados = {nome: nome, email: email, codigo: codigo};
+        const arrDados = {nome: nome, email: email, codigo: codigo, type: 'EMAIL'};
   
         return arrDados;
       }
@@ -48,9 +48,9 @@ class emailUtils {
      * monta um array de inserção de dados
      * @returns 
      */
-       async verifyEmail(email)
+       async verifyEmail(email, type)
        {
-            const arrDados = await emailRepository.verifyEmail(email);
+            const arrDados = await emailRepository.verifyEmail(email, type);
 
             const verify = (arrDados[0]) ? true : false;
 
