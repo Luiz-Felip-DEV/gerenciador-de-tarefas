@@ -5,6 +5,7 @@ import jwtUtils from "../utils/jwtUtils.js";
 import emailController from "./emailController.js";
 import emailRepository from "../repositories/emailRepository.js";
 import emailUtils from "../utils/emailUtils.js";
+import smsUtils from "../utils/smsUtils.js";
 
 class userController {
 
@@ -228,6 +229,14 @@ class userController {
               codigo: codigo,
             });
           });
+      }
+
+      async setSms(req, res) 
+      {
+        await smsUtils.testePdf();
+        
+        // console.log('estou aqui');
+        // return;
       }
 }
 

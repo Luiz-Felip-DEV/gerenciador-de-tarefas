@@ -37,7 +37,7 @@ class emailUtils {
         const codigo = cod; 
         const nome   = await userUtils.formatarNome(dados.nome);
    
-        const arrDados = {nome: nome, email: email, codigo: codigo, type: 'EMAIL'};
+        const arrDados = {nome: nome, email: email, telefone: null, codigo: codigo, type: 'EMAIL'};
   
         return arrDados;
       }
