@@ -110,7 +110,6 @@ class userController {
             try {
                 codigo = await emailController.resetPassword(email, nome);
             } catch (e) {
-                console.log('no resetPassword');
                 return res.status(500).json({
                     error: true,
                     msgUser: "Erro ao tentar enviar o email, Por Favor, Tente novamente mais tarde.",
@@ -123,7 +122,6 @@ class userController {
                 try {
                     await emailRepository.putCod(email, codigo, 'EMAIL');
                 } catch (e) {
-                    console.log('no putCod');
                     return res.status(500).json({
                         error: true,
                         msgUser: "Erro ao tentar enviar o email, Por Favor, Tente novamente mais tarde.",
@@ -136,7 +134,6 @@ class userController {
                 try {
                     await emailRepository.setEmail(arrSetEmail);
                 } catch (e) {
-                    console.log('no setEmail');
                     return res.status(500).json({
                         error: true,
                         msgUser: "Erro ao tentar enviar o email, Por Favor, Tente novamente mais tarde.",
@@ -233,8 +230,10 @@ class userController {
 
       async setSms(req, res) 
       {
-        await smsUtils.testePdf();
-        
+        // await smsUtils.testePdf();
+
+        await smsUtils.envioSms('34992472620');
+
         // console.log('estou aqui');
         // return;
       }

@@ -41,10 +41,16 @@ class smsUtils {
                 "&mensagem=" +
                 mensagem;
 
+                // console.log(url);
+                // return;
+
             try {
                 const response = await fetch(url);
-                console.log(response);
+                // console.log(response);
                 const text = await response.text();
+
+                console.log(text);
+                return;
 
                 if (text.ok && text.ok === "OK") {
                     return false;
