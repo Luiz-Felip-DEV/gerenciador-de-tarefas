@@ -75,7 +75,17 @@ class userRequest {
     async setCod(req, res, next)
     {
         let msg = '';
-        
+
+        if (req.body.email && await userUtils.verifyEmail(req.body.email))
+        {
+            msg = 'Email já está cadastrado na base de dados, Por Favor, Coloque outro.';
+        }
+
+        if (req.body.telefone && await userUtils.verifyTelefone(req.body.telefone))
+        {
+            msg = 'Telefone já está cadastrado na base de dados, Por Favor, Coloque outro.';
+        }
+
         if (req.body.email && !userUtils.emailValido(req.body.email))
         {
             msg = 'Email inválido.';
